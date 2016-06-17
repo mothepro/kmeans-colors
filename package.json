@@ -1,0 +1,20 @@
+{
+  "name": "kmeans-colors",
+  "version": "1.0.0",
+  "description": "K means clustering on colors",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "kmeans",
+    "colors",
+    "clustering"
+  ],
+  "author": {
+    "name": "Maurice Prosper",
+    "url": "https://mauriceprosper.com",
+    "email": "maurice.prosper@ttu.edu"
+  },
+  "license": "ISC"
+}
