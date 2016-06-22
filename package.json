@@ -16,5 +16,9 @@
     "url": "https://mauriceprosper.com",
     "email": "maurice.prosper@ttu.edu"
   },
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "color-js": "^1.0.3",
+    "commander": "^2.9.0"
+  }
 }
