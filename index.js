@@ -43,7 +43,10 @@ KMeans.prototype.findGroups = function() {
             color.lastGroup = cluster.name;
         });
 
-        centroids.push( cluster.centroid() );
+        centroids.push({
+            centroid: cluster.centroid(),
+            cluster: cluster,
+        });
         
         cluster.clear();
     });
@@ -53,17 +56,17 @@ KMeans.prototype.findGroups = function() {
         var minDist, minIndex = 0, tmp;
 
         // find closest
-        centroids.forEach(function (centroid, i) {
-            tmp = color.distance( centroid );
+        centroids.forEach(function (i) {
+            tmp = color.eyeDistance( i.centroid );
 
             if(typeof minDist === 'undefined' || tmp < minDist) {
-                minIndex = i;
+                minIndex = i.cluster;
                 minDist = tmp;
             }
         });
 
         // update color info
-        this.groups[ minIndex ].add( color );
+        minIndex.add( color );
     }.bind(this));
 };
 
@@ -110,4 +113,37 @@ KMeans.prototype.solve = function (verbosity) {
                 );
             });
     } while(this.changed());
+};
+
+/**
+ * Returns all cluster centriods
+ * @returns {Array}
+ */
+KMeans.prototype.getClusters = function() {
+    var ret = [];
+    this.groups.forEach(function (cluster) {
+        ret.push(cluster.centroid());
+    });
+    return ret;
+};
+
+/**
+ * Compares a color to the clusters and finds the nearest one
+ * @param color
+ * @returns {Cluster}
+ */
+KMeans.prototype.test = function (color) {
+    var tmp, min = {};
+
+    // find closest
+    this.groups.forEach(function (cluster) {
+        tmp = color.eyeDistance( cluster.centroid() );
+
+        if(typeof min.dist === 'undefined' || tmp < min.dist) {
+            min.cluster = cluster;
+            min.dist = tmp;
+        }
+    });
+
+    return min.cluster;
 };
