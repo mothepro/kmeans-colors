@@ -16,6 +16,13 @@
     "url": "https://mauriceprosper.com",
     "email": "maurice.prosper@ttu.edu"
   },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mothepro/kmeans-colors.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mothepro/kmeans-colors/issues"
+  },
   "license": "ISC",
   "dependencies": {
     "color-js": "^1.0.3",
