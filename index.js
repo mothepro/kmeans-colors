@@ -18,11 +18,7 @@ function KMeans(colors, groups) {
 
     
     for(var i = 0; i < this.colors.length; i++)
-        this.colors[i] = Color({
-            hue: parseInt(Math.random() * 360),
-            saturation: Math.random(),
-            lightness: Math.random(),
-        });
+        this.colors[i] = Color().randomize();
 
     // choose random start points for groups
     for(var i = 0; i < this.groups.length; i++) {
@@ -106,7 +102,7 @@ KMeans.prototype.solve = function (verbosity) {
 
         if(verbosity >= 2)
             this.groups.forEach(function(cluster) {
-                console.log('%s has %d colors, its centriod is ',
+                console.log('%s has %d colors, its centroid is ',
                     cluster.name,
                     cluster.colors.length,
                     cluster.centroid()
