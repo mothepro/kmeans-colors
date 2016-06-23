@@ -3,6 +3,7 @@ const program = require('commander');
 const KMeans = require('..');
 const pkg = require('../package.json');
 const Color = require('../lib/color');
+var echo;
 
 // args
 program
@@ -14,9 +15,24 @@ program
         return colors;
     }, [])
     .option('-z, --test-count <n>', 'Number of random colors to test against the clusters', function (g) { return parseInt(g, 10); }, 0)
-    .option('--html', 'Output in html', false)
+    .option('--html', 'Output in html format', false)
+    .option('-o, --output <file>', 'Output to a file')
     .option('-v, --verbose', 'A value that can be increased', function (v, total) { return total + 1; }, 0)
     .parse(process.argv);
+
+// outputting to a file
+if(program.output) {
+    const util = require('util'),
+        fs = require('fs');
+    
+    // if(fs.existSync(program.output))
+    fs.unlinkSync(program.output);
+
+    echo = function () {
+        fs.appendFileSync(program.output, util.format.apply(util, Array.from(arguments)) + '\n');
+    };
+} else // console
+    echo = console.log;
 
 // add randoms
 for(var i = 0; i < program.testCount; i++)
@@ -28,16 +44,16 @@ k.solve(program.verbose);
 
 // print to console
 if(!program.html) {
-    k.groups.forEach(function (c) { console.log(c.centroid()); });
+    k.groups.forEach(function (c) { echo(c.centroid()); });
 
     program.testColor.forEach(function (color) {
-        console.log(color, k.test(color).centroid());
+        echo(color, k.test(color).centroid());
     });
 }
 
 // print as HTML
 if(program.html) {
-    console.log(`<style>
+    echo(`<style>
     div {
         display: inline-block;
     }
@@ -53,14 +69,14 @@ if(program.html) {
 
     // clusters
     k.groups.forEach(function (c) {
-        console.log('<div><div class="color" style="background-color: %s"></div><br>%s</div>', c.centroid().toCSS(), c.name);
+        echo('<div><div class="color" style="background-color: %s"></div><br>%s</div>', c.centroid().toCSS(), c.name);
     });
 
     // tests
     program.testColor.forEach(function (color) {
         var cent = k.test(color);
 
-        console.log('<hr><div class="color" style="background-color: %s"></div> <div class="color" style="background-color: %s"></div> %s',
+        echo('<hr><div class="color" style="background-color: %s"></div> <div class="color" style="background-color: %s"></div> %s',
             color.toCSS(),
             cent.centroid().toCSS(),
             cent.name
