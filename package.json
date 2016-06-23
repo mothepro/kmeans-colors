@@ -1,6 +1,6 @@
 {
   "name": "kmeans-colors",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "K means clustering on colors",
   "main": "index.js",
   "scripts": {
