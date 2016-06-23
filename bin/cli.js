@@ -56,12 +56,19 @@ if(program.html) {
     echo(`<style>
     div {
         display: inline-block;
+        text-align: center;
+    }
+    .test {
+        border: thin dashed #888;
+        margin: 1em;
+    }
+    .cluster {
+        margin-right: 2em;
     }
     .color {
         width: 1em;
         height: 1em;
         margin: .5em;
-        margin-right: 1em;
         padding: 1em;
         border: thin solid black;
     }
@@ -69,14 +76,23 @@ if(program.html) {
 
     // clusters
     k.groups.forEach(function (c) {
-        echo('<div><div class="color" style="background-color: %s"></div><br>%s</div>', c.centroid().toCSS(), c.name);
+        echo(`<div class="cluster">
+                <div class="color" style="background-color: %s"></div>
+                <br> %s
+              </div>`, c.centroid().toCSS(), c.name);
     });
 
+    echo('<hr>');
+    
     // tests
     program.testColor.forEach(function (color) {
         var cent = k.test(color);
 
-        echo('<hr><div class="color" style="background-color: %s"></div> <div class="color" style="background-color: %s"></div> %s',
+        echo(`<div class="test">
+                <div class="color" style="background-color: %s"></div>
+                <div class="color" style="background-color: %s"></div>
+                <br> %s
+              </div>`,
             color.toCSS(),
             cent.centroid().toCSS(),
             cent.name
